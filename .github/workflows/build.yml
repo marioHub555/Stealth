@@ -3,26 +3,34 @@ name: Build Stealth Remastered (.asi)
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4  # تم التحديث لـ v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
       with:
         submodules: recursive
 
+    - name: Setup Plugin-SDK
+      run: |
+        git clone https://github.com/DK22Pac/plugin-sdk.git ../plugin-sdk
+        # إعداد متغير البيئة الذي يحتاجه المشروع للوصول للمكتبة
+        echo "PLUGIN_SDK_DIR=${{ github.workspace }}\..\plugin-sdk" >> $GITHUB_ENV
+
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2 # تم التحديث لـ v2
+      uses: microsoft/setup-msbuild@v2
 
     - name: Build Solution
-      run: msbuild "Stealth Remastered.sln" /p:Configuration=Release /p:Platform=x86
+      # سنستخدم Win32 كما اتفقنا لأنها القياسية في plugin-sdk
+      run: msbuild "Stealth Remastered.sln" /p:Configuration=Release /p:Platform=Win32
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v4 # هذا هو التغيير المهم (v4)
+      uses: actions/upload-artifact@v4
       with:
-        name: Stealth-Remastered-ASI
-        path: Release/*.asi
+        name: Stealth-Remastered-Final
+        path: |
+          Release/*.asi
+          bin/*.asi
