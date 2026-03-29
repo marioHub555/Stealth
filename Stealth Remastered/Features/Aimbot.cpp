@@ -57,6 +57,14 @@ void CAimbot::GetAimingPlayer()
 			if (!pPed || !pPed->IsAlive())
 				continue;
 
+			// --- تعديل: فحص الفريق بناءً على اللون ---
+			if (g_Config.g_Aimbot.bTeamCheckColor)
+			{
+				uint32_t myColor = pSAMP->getPlayerColor(pSAMP->getPlayers()->sLocalPlayerID);
+				uint32_t targetColor = pSAMP->getPlayerColor(i);
+				if (myColor == targetColor) continue;
+			}
+
 			if (g_Config.g_Aimbot.bTeamProtect && pSAMP->getPlayerColor(i) == pSAMP->getPlayerColor(pSAMP->getPlayers()->sLocalPlayerID))
 				continue;
 
@@ -305,6 +313,13 @@ void CAimbot::Triggerbot()
 
 					if (pSAMP->getPlayers()->pRemotePlayer[i]->pPlayerData->pSAMP_Actor->pGTA_Ped->hitpoints <= 0.f)
 						continue;
+
+					// --- تعديل: فحص الفريق في الـ Triggerbot بناءً على اللون ---
+					if (g_Config.g_Aimbot.bTeamCheckColor)
+					{
+						if (pSAMP->getPlayerColor(i) == pSAMP->getPlayerColor(pSAMP->getPlayers()->sLocalPlayerID))
+							continue;
+					}
 
 					if (g_Config.g_Aimbot.bTeamProtect && pSAMP->getPlayerColor(i) == pSAMP->getPlayerColor(pSAMP->getPlayers()->sLocalPlayerID))
 						continue;
