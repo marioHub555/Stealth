@@ -1,36 +1,10 @@
-name: Final Auto Build
-
-on: 
-  push:
-    branches: [ "main" ]
-
-jobs:
-  build:
-    runs-on: windows-latest
-
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Get Plugin-SDK
-      run: |
-        git clone https://github.com/DK22Pac/plugin-sdk.git ../plugin-sdk
-      shell: bash
-
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
-
-    - name: Build Solution
-      # هذا السطر يتجاهل الأخطاء التافهة ويبحث عن ملف الـ sln أينما كان
-      run: |
-        msbuild "Stealth Remastered/Stealth Remastered.sln" /p:Configuration=Release /p:Platform=Win32 || msbuild "Stealth Remastered.sln" /p:Configuration=Release /p:Platform=Win32 || msbuild "Stealth Remastered.sln" /p:Configuration=Release
+- name: Build Solution
+      run: msbuild "Stealth Remastered.sln"
       
     - name: Upload Finished ASI
       uses: actions/upload-artifact@v4
       with:
         name: Stealth-Final-Build
         path: |
-          **/Release/*.asi
-          **/bin/*.asi
+          **/*.asi
+          **/*.dll
