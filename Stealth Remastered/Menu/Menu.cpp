@@ -367,6 +367,8 @@ void CMenu::Render()
 			ImGui::BeginChild("##Filters", { 280, 147 }, true, ImGuiWindowFlags_MenuBar);
 			{
 				if (ImGui::BeginMenuBar()) ImGui::TextUnformatted("Aimbot Filters"), ImGui::EndMenuBar();
+				ImGui::Checkbox("Team Check (Color)", &g_Config.g_Aimbot.bTeamCheckColor);
+				Tooltip("Ignore players with the same color as yours");
 				ImGui::Checkbox("Team Protect", &g_Config.g_Aimbot.bTeamProtect);
 				ImGui::Checkbox("Lock Through Objects", &g_Config.g_Aimbot.bLockThroughObjects);
 				ImGui::Checkbox("Ignore Max Distance", &g_Config.g_Aimbot.bIgnoreMaxDistance);
