@@ -34,6 +34,9 @@ struct stConfig
 		bool bDrawTracer{ false };
 		float fOutlineThickness{ 2.f };
 		ImVec4 colorRange{ 0.f, 0.5f, 0.f, 0.5f };
+		
+		// التعديل الجديد هنا: خاصية فحص لون الفريق
+		bool bTeamCheckColor{ false }; 
 	} g_Aimbot;
 
 	struct stCombat
